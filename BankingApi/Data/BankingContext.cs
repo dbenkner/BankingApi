@@ -15,5 +15,7 @@ namespace BankingApi.Data
         }
 
         public DbSet<BankingApi.Models.Customer> Customers { get; set; } = default!;
+
+        public DbSet<BankingApi.Models.Account> Accounts { get; set; } = default!;
     }
 }
