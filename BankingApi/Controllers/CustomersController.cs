@@ -85,7 +85,7 @@ namespace BankingApi.Controllers
         [HttpPut("{id}/Add{accountType}")]
         public async Task<IActionResult> AddAccount(int id, string accountType)
         {
-            if (accountType.ToUpper() != "CK" || accountType.ToUpper() != "SV")
+            if (accountType.ToUpper() != "CK" && accountType.ToUpper() != "SV")
             {
                 return BadRequest();
             }
@@ -96,9 +96,32 @@ namespace BankingApi.Controllers
                 Type = accountType.ToUpper(),
             };
 
-
+            _context.Accounts.Add(newAccount);
+            await _context.SaveChangesAsync();
             return NoContent();
         }
+        [HttpDelete("{id}/{accountId}")]
+        public async Task<IActionResult> CloseAccount(int id, int AccountId)
+        {
+            if (_context.Customers == null)
+            {
+                return NotFound();
+            }
+            var customer = await _context.Customers.FindAsync(id);
+            if (customer == null)
+            {
+                return NotFound();
+            }
+            var account = _context.Accounts.Where(x => x.Id == AccountId).FirstOrDefault();
+            if (account == null)
+            {
+                return NotFound();
+            }
+            _context.Accounts.Remove(account);
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+    
 
         // POST: api/Customers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
