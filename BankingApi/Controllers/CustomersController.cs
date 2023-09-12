@@ -81,6 +81,25 @@ namespace BankingApi.Controllers
             return NoContent();
         }
 
+        // PUT: api/Customers/{id}/Add{accountType}
+        [HttpPut("{id}/Add{accountType}")]
+        public async Task<IActionResult> AddAccount(int id, string accountType)
+        {
+            if (accountType.ToUpper() != "CK" || accountType.ToUpper() != "SV")
+            {
+                return BadRequest();
+            }
+
+            var newAccount = new Account
+            {
+                Id = 0,
+                Type = accountType.ToUpper(),
+            };
+
+
+            return NoContent();
+        }
+
         // POST: api/Customers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
