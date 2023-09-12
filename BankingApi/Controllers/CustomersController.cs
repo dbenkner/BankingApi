@@ -85,15 +85,26 @@ namespace BankingApi.Controllers
         [HttpPut("{id}/Add{accountType}")]
         public async Task<IActionResult> AddAccount(int id, string accountType)
         {
-            if (accountType.ToUpper() != "CK" && accountType.ToUpper() != "SV")
+            accountType = accountType.ToUpper();
+            decimal intRate;
+            switch(accountType)
             {
-                return BadRequest();
+                case "CK":
+                    intRate = 0m;
+                    break;
+                case "SV":
+                    intRate = 0.01m;
+                    break;
+                default:
+                    return BadRequest();
             }
 
             var newAccount = new Account
             {
                 Id = 0,
-                Type = accountType.ToUpper(),
+                Type = accountType,
+                InterestRate = intRate,
+                CustomerId = id
             };
 
             _context.Accounts.Add(newAccount);
