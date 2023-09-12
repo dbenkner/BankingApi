@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BankingApi.Models
 {
@@ -10,6 +11,7 @@ namespace BankingApi.Models
 		public string Type { get; set; } = string.Empty;
 		[StringLength(255)]
 		public string Description { get; set; } = string.Empty;
+		[Column(TypeName = "decimal(4,3)")]
 		public decimal InterestRate { get; set; }
 		public DateTime CreatedDate { get; set; } = DateTime.Now;
 		public DateTime? ModifiedDate { get; set; }
