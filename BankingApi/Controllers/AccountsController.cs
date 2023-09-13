@@ -50,6 +50,17 @@ namespace BankingApi.Controllers
             return account;
         }
 
+        //GET: api/Accounts/Customer/{customerId}
+        [HttpGet("Customer/{customerId}")]
+        public async Task<ActionResult<IEnumerable<Account>>> GetAccountsByCustomerId(int customerId)
+        {
+            if (_context.Accounts == null)
+            {
+                return NotFound();
+            }
+            return await _context.Accounts.Where(x => x.CustomerId == customerId).ToListAsync();
+        }
+
         // PUT: api/Accounts/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
