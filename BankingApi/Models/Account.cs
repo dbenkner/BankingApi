@@ -15,6 +15,7 @@ namespace BankingApi.Models
 		public decimal InterestRate { get; set; }
 		public DateTime CreatedDate { get; set; } = DateTime.Now;
 		public DateTime? ModifiedDate { get; set; }
+		public DateTime? LastTransactionDate { get; set; }
 		public int CustomerId { get; set; }
 		public virtual Customer? Customer { get; set; }
 
