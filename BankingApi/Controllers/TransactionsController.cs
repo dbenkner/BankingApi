@@ -107,8 +107,17 @@ namespace BankingApi.Controllers
             {
                 return BadRequest();
             }
-            
+            if (transaction.TransactionType == "D")
+            {
+                var account = _context.Accounts.FindAsync(transaction.AccountId);
+                var newBalance = transaction.PreviousBalance + amount;
+                transaction.NewBalance = newBalance;
 
+            }
+            else if(transaction.TransactionType == "W")
+            {
+
+            }
         }
         // DELETE: api/Transactions/5
         [HttpDelete("{id}")]
