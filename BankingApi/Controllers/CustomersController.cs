@@ -22,7 +22,7 @@ namespace BankingApi.Controllers
         }
 
         //GET: api/Customers/{CardCode}/{PinCode}
-        [HttpGet]
+        [HttpGet("{CardCode}/{PinCode}")]
         public async Task<ActionResult<Customer>> GetCustomerByCodes(int CardCode, int PinCode)
         {
             if (_context.Customers == null)
