@@ -95,7 +95,21 @@ namespace BankingApi.Controllers
 
             return CreatedAtAction("GetTransaction", new { id = transaction.Id }, transaction);
         }
+        // api/transactions/amount
+        [HttpPost("{Amount}")]
+        public async Task<ActionResult<Transaction>> NewTransaction(Transaction transaction, decimal amount)
+        {
+            if (_context.Transactions == null)
+            {
+                return Problem("Entity set 'BankingContext.Transactions'  is null.");
+            }
+            if (amount <= 0)
+            {
+                return BadRequest();
+            }
+            
 
+        }
         // DELETE: api/Transactions/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTransaction(int id)
