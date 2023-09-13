@@ -21,6 +21,22 @@ namespace BankingApi.Controllers
             _context = context;
         }
 
+        //GET: api/Customers/{CardCode}/{PinCode}
+        [HttpGet]
+        public async Task<ActionResult<Customer>> GetCustomerByCodes(int CardCode, int PinCode)
+        {
+            if (_context.Customers == null)
+            {
+                return NotFound();
+            }
+            var customer = await _context.Customers.Where(x => x.CardCode == CardCode && x.PinCode == PinCode).SingleOrDefaultAsync();
+            if (customer == null)
+            {
+                return NotFound();
+            }
+            return customer;
+        }
+
         // GET: api/Customers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Customer>>> GetCustomers()
@@ -111,6 +127,7 @@ namespace BankingApi.Controllers
             await _context.SaveChangesAsync();
             return NoContent();
         }
+
         [HttpDelete("{id}/{accountId}")]
         public async Task<IActionResult> CloseAccount(int id, int AccountId)
         {
