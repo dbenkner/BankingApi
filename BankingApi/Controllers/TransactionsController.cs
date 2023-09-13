@@ -107,17 +107,25 @@ namespace BankingApi.Controllers
             {
                 return BadRequest();
             }
+            var account = await _context.Accounts.Where(x => x.Id == transaction.AccountId).SingleOrDefaultAsync();
+            decimal newBalance = 0.0m;
             if (transaction.TransactionType == "D")
-            {
-                var account = _context.Accounts.FindAsync(transaction.AccountId);
-                var newBalance = transaction.PreviousBalance + amount;
-                transaction.NewBalance = newBalance;
-
+            {  
+                newBalance = transaction.PreviousBalance + amount;
             }
             else if(transaction.TransactionType == "W")
             {
-
+               if (amount > account.Balance)
+                {
+                    return BadRequest();
+                }
+               newBalance = transaction.PreviousBalance - amount;
             }
+            transaction.NewBalance = newBalance;
+            account.Balance = newBalance;
+            _context.Transactions.Add(transaction);
+            
+            await _context.SaveChangesAsync();
         }
         // DELETE: api/Transactions/5
         [HttpDelete("{id}")]
