@@ -50,6 +50,17 @@ namespace BankingApi.Controllers
             return transaction;
         }
 
+        //GET: api/Transactions/Account/{accountId}
+        [HttpGet("Account/{accountId}")]
+        public async Task<ActionResult<IEnumerable<Transaction>>> GetTransactionsByAccountId(int accountId)
+        {
+            if (_context.Transactions == null)
+            {
+                return NotFound();
+            }
+            return await _context.Transactions.Where(x => x.AccountId == accountId).ToListAsync();
+        }
+
         // PUT: api/Transactions/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -124,8 +135,11 @@ namespace BankingApi.Controllers
             transaction.NewBalance = newBalance;
             account.Balance = newBalance;
             _context.Transactions.Add(transaction);
-            
+            var acctsCtrl = new AccountsController(_context);
+            await acctsCtrl.PutAccount(account.Id, account);
             await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetTransaction", new { id = transaction.Id }, transaction);
         }
         // DELETE: api/Transactions/5
         [HttpDelete("{id}")]
